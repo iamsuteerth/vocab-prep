@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #f7f5f0;
+  --surface: #fffefb;
+  --surface-2: #f1eee6;
+  --text: #201d17;
+  --text-muted: #77705f;
+  --border: #e6e2d6;
+  --accent: #3f3d8f;
+  --accent-soft: #ebebfa;
+  --know: #1f7a3f;
+  --know-soft: #e6f4ea;
+  --dontknow: #b23a3a;
+  --dontknow-soft: #fbeaea;
+  --bookmark: #a16207;
+  --bookmark-soft: #faf1de;
+  --serif: var(--font-serif), Georgia, "Times New Roman", serif;
+  --sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  --background: #14131c;
+  --surface: #1d1c28;
+  --surface-2: #262534;
+  --text: #ece9f5;
+  --text-muted: #9d97b0;
+  --border: #2f2e42;
+  --accent: #a5a0f0;
+  --accent-soft: #2c2b52;
+  --know: #5fd07f;
+  --know-soft: #16301e;
+  --dontknow: #f28b8b;
+  --dontknow-soft: #3d1c22;
+  --bookmark: #e9b558;
+  --bookmark-soft: #3b2e12;
+  --serif: var(--font-serif), Georgia, "Times New Roman", serif;
+  --sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-know: var(--know);
+  --color-know-soft: var(--know-soft);
+  --color-dontknow: var(--dontknow);
+  --color-dontknow-soft: var(--dontknow-soft);
+  --color-bookmark: var(--bookmark);
+  --color-bookmark-soft: var(--bookmark-soft);
+  --font-serif: var(--serif);
+  --font-sans: var(--sans);
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+/* ---- Type ramp (PDF-inspired: serif content, sans chrome) ---- */
+
+/* The word itself — display serif, tight leading & tracking as it grows */
+.word-display {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(2rem, 6vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* Definitions & usage — reading serif, comfortable leading */
+.font-reading {
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+/* UI labels — sans, slightly positive tracking for legibility at small sizes */
+.font-ui {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+
+.label-caps {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ---- Interaction feel ---- */
+
+.pressable {
+  transition: transform 120ms ease-out, box-shadow 120ms ease-out,
+    background-color 160ms ease, border-color 160ms ease, opacity 160ms ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.pressable:active {
+  transform: scale(0.97);
+}
+.pressable:disabled {
+  opacity: 0.45;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pressable:active {
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Motion ---- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.3s ease both;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-pop {
+  animation: pop 0.32s ease both;
+}
+
+@keyframes checkmark {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- Materials ---- */
+
+.material {
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Thin, unobtrusive scrollbars for filter rails */
+.scroll-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.scroll-x::-webkit-scrollbar {
+  display: none;
+}
